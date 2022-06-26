@@ -22,10 +22,10 @@ namespace MatchGame
     /// </summary>
     public partial class MainWindow : Window
     {
-        DispatcherTimer timer = new DispatcherTimer();
-        int tenthsOfSecondsElapsed;
-        int matchesFound;
-        int bestTime = 1000;
+        DispatcherTimer timer = new DispatcherTimer(); // initalize timer
+        int tenthsOfSecondsElapsed; //keep track of time elapsed
+        int matchesFound; // count of matches found
+        int bestTime = 1000; //best time starts at one minute, overwritten by new best times
 
         public MainWindow()
         {
@@ -41,8 +41,11 @@ namespace MatchGame
         {
             tenthsOfSecondsElapsed++;
             timeTextBlock.Text = (tenthsOfSecondsElapsed / 10F).ToString("0.0s");
+
+            // game ends at 8 matches found
             if (matchesFound == 8)
             {
+                // stop timer and overwrite new best time if applicable
                 timer.Stop();
                 if (tenthsOfSecondsElapsed < bestTime)
                 {
@@ -52,6 +55,8 @@ namespace MatchGame
             }
         }
 
+        // This method sets up the game screen by using the list of animal emojis 
+        // to fill each of the 16 available grid squares
         private void SetUpGame()
         {
             List<string> animalEmoji = new List<string>()
@@ -78,7 +83,7 @@ namespace MatchGame
                     string nextEmoji = animalEmoji[index];
                     textBlock.Text = nextEmoji;
                     animalEmoji.RemoveAt(index);
-                }                  
+                }
             }
 
             timer.Start();
@@ -89,6 +94,9 @@ namespace MatchGame
         TextBlock lastTextBlockClicked;
         bool findingMatch = false;
 
+        // Clicking on an emoji in a grid square changes visibility to hidden
+        // once a second emoji is clicked, the visibility of both emojis is hidden
+        // if they match or visibility is set back to visible if they do not match
         private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
         {
             TextBlock textBlock = sender as TextBlock;
@@ -111,6 +119,7 @@ namespace MatchGame
             }
         }
 
+        // Click on the bottom row of grid to restart game once all matches are found
         private void timeTextBlock_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (matchesFound == 8)
