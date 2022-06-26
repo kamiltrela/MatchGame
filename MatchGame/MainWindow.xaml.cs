@@ -25,6 +25,7 @@ namespace MatchGame
         DispatcherTimer timer = new DispatcherTimer();
         int tenthsOfSecondsElapsed;
         int matchesFound;
+        int bestTime = 1000;
 
         public MainWindow()
         {
@@ -43,7 +44,11 @@ namespace MatchGame
             if (matchesFound == 8)
             {
                 timer.Stop();
-                timeTextBlock.Text = timeTextBlock.Text + " - play again?";
+                if (tenthsOfSecondsElapsed < bestTime)
+                {
+                    bestTime = tenthsOfSecondsElapsed;
+                }
+                timeTextBlock.Text = timeTextBlock.Text + " - play again?\n" + "best time: " + (bestTime / 10F) + "s";
             }
         }
 
